@@ -3,7 +3,10 @@ body {
     background-color: #8d8d8d;
     margin: 0;
     padding: 0;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
 }
 
 header {
@@ -11,18 +14,20 @@ header {
     color: #fff;
     text-align: center;
     padding: 1em 0;
+    width: 100%;
 }
 
 h1 {
     margin: 0;
-    color: #fff;
+    color: #333;
 }
 
 main {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     padding: 1em;
+    width: 100%;
 }
 
 .user-card {
@@ -106,6 +111,7 @@ main {
 #search-container {
     text-align: center;
     margin: 20px;
+    width: 100%;
 }
 
 #search-input {
@@ -118,10 +124,12 @@ main {
 }
 
 #posts-container {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
     justify-content: center;
     padding: 20px;
+    width: 100%;
 }
 
 .post-card {
@@ -148,4 +156,55 @@ main {
 .post-card p {
     font-size: 1em;
     color: #666;
+}
+
+.user-info {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 600px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px 5px 0 0;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.card-body {
+    padding: 20px;
+    text-align: left;
+}
+
+.card-body p {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+.card-body i {
+    margin-right: 10px;
+}
+
+.card-body strong {
+    min-width: 100px;
+    display: inline-block;
+}
+
+#posts-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    width: 100%;
 }

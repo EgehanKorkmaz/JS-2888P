@@ -16,26 +16,14 @@ document.addEventListener("DOMContentLoaded", function() {
             alert("Invalid user ID. Please enter a number between 1 and 10.");
             throw new Error("Invalid user ID");
         }
+        window.history.replaceState(null, null, `?userId=${userId}`);
     }
 
     // Kullanıcı bilgilerini çekme ve gösterme
     fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
         .then(response => response.json())
         .then(user => {
-            const userInfo = document.createElement('div');
-            userInfo.classList.add('user-info');
-            userInfo.innerHTML = `
-                <h2>Kullanıcı Bilgileri</h2>
-                <p><strong>ID:</strong> ${user.id}</p>
-                <p><strong>Name:</strong> ${user.name}</p>
-                <p><strong>Username:</strong> ${user.username}</p>
-                <p><strong>Email:</strong> ${user.email}</p>
-                <p><strong>Address:</strong> ${user.address.street}, ${user.address.city}</p>
-                <p><strong>Phone:</strong> ${user.phone}</p>
-                <p><strong>Website:</strong> ${user.website}</p>
-                <p><strong>Company:</strong> ${user.company.name}</p>
-            `;
-            userInfoContainer.appendChild(userInfo);
+            showUserInfo(user);
         })
         .catch(error => console.error('Error:', error));
 
@@ -43,9 +31,10 @@ document.addEventListener("DOMContentLoaded", function() {
     fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`)
         .then(response => response.json())
         .then(posts => {
+            postsContainer.innerHTML = ''; // Önceki postları temizle
             posts.forEach(post => {
                 const postCard = document.createElement('div');
-                postCard.classList.add('post-card');
+                postCard.classList.add('post-card', 'col-md-2'); // Add Bootstrap column class for proper grid layout
                 postCard.innerHTML = `
                     <h2>${post.title}</h2>
                     <p>${post.body}</p>
@@ -55,7 +44,27 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         })
         .catch(error => console.error('Error:', error));
-
+    
+    function showUserInfo(user) {
+        userInfoContainer.innerHTML = `
+            <div class="card">
+                <div class="card-header">
+                    <h2>Kullanıcı Bilgileri</h2>
+                </div>
+                <div class="card-body">
+                    <p><i class="fas fa-id-badge"></i> <strong>ID:</strong> ${user.id}</p>
+                    <p><i class="fas fa-user"></i> <strong>Name:</strong> ${user.name}</p>
+                    <p><i class="fas fa-user-tag"></i> <strong>Username:</strong> ${user.username}</p>
+                    <p><i class="fas fa-envelope"></i> <strong>Email:</strong> ${user.email}</p>
+                    <p><i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> ${user.address.street}, ${user.address.city}</p>
+                    <p><i class="fas fa-phone"></i> <strong>Phone:</strong> ${user.phone}</p>
+                    <p><i class="fas fa-globe"></i> <strong>Website:</strong> ${user.website}</p>
+                    <p><i class="fas fa-building"></i> <strong>Company:</strong> ${user.company.name}</p>
+                </div>
+            </div>
+        `;
+    }
+    
     function openModal(post) {
         modalTitle.textContent = post.title;
         modalBody.textContent = post.body;
@@ -77,17 +86,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     closeModal.onclick = function() {
         postModal.classList.remove('show');
-        setTimeout(() => {
-            postModal.style.display = "none";
-        }, 300); // 300ms, transition süresine eşit olmalı
     }
 
     window.onclick = function(event) {
         if (event.target == postModal) {
             postModal.classList.remove('show');
-            setTimeout(() => {
-                postModal.style.display = "none";
-            }, 300); // 300ms, transition süresine eşit olmalı
         }
     }
 });
